@@ -10,13 +10,20 @@ app.use(cors());
 
 app.use(express.json());
 
+
+const geminiApi = require('./geminiApi');
+ 
+
+
 // Connect to MongoDB
+
 mongoose.connect(process.env.Uri)
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.log(err));
 
-app.use(todoRouter);
 
 app.listen(process.env.Port, () => {
     console.log('Server is running on port 5000');
 });
+
+app.use(todoRouter);

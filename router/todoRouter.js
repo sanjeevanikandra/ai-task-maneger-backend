@@ -3,36 +3,49 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
-//const Todo = require('./models/todo');
+// Getting AI-based task priority
+const run = require('../geminiApi');
 
-// Create a new todo
+// router.post('/ai', async (req, res) => {
+//     const { title } = req.body;
+//     console.log(title);
+//     try {
+
+//         // Getting priority from Gemini based on the title
+//         const priority = await run(title);
+//         res.status(201).json({ priority }); // Sending AI-generated priority
+//     } catch (err) {
+//         console.log(err);
+//         res.status(400).json({ message: err.message });
+//     }
+// });
+
 router.post('/', async (req, res) => {
-    const { title, description, priority, date } = req.body;
+    const { title,priority,date } = req.body;
     try {
         const todoData = await Todo.create({
             title: title,
-
-            priority: priority,
+            
+            priority:await run(title),
             date: date
         });
 
-        res.status(201).json(todoData);
+        res.status(201).json(todoData); 
     } catch (err) {
         res.status(400).json({ message: err.message });
-    }
-
+    }   
+    
 })
 
 // Get all todos
 router.get('/', async (req, res) => {
-    const showTodo = await Todo.find();
     try {
+        const showTodo = await Todo.find();
         res.status(200).json(showTodo);
-
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-})
+});
 
 // Get a todo by id
 router.get('/:id', async (req, res) => {
@@ -43,10 +56,9 @@ router.get('/:id', async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-})
+});
 
-//delete a todo by id
-
+// Delete a todo by id
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -55,19 +67,19 @@ router.delete('/:id', async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-})
+});
 
-//update a todo by id
-
+// Update a todo by id
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { task, status, date } = req.body;
     try {
         const updateTodo = await Todo.findByIdAndUpdate(id, req.body, { new: true });
         res.status(200).json(updateTodo);
+        
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-})
+});
 
 module.exports = router;
