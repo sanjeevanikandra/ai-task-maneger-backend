@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const todoSchema = new mongoose.Schema({
   title: { type: String, required: true },
   priority: { type: String, enum: ['High', 'Medium', 'Low'], default: 'Medium' },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  completed: { type: Boolean, default: false },
 }, { timestamps: true });
 
 // Create a model
