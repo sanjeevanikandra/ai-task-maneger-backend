@@ -72,7 +72,7 @@ router.delete('/:id', async (req, res) => {
 // Update a todo by id
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
-    const { task, status, date } = req.body;
+    const { task, status, date, completed } = req.body;
     try {
         const updateTodo = await Todo.findByIdAndUpdate(id, req.body, { new: true });
         res.status(200).json(updateTodo);
