@@ -25,8 +25,6 @@ router.post('/', async (req, res) => {
     try {
         const todoData = await Todo.create({
             title: title,
-            
-            priority:await run(title),
             date: date
         });
 
